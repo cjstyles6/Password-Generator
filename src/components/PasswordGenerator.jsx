@@ -32,37 +32,39 @@ const PasswordGenerator = () => {
   const copyToClipBoard = () => {
     navigator.clipboard.writeText(password).then(() => {
       console.log('copied');
-      setIsCopied(true); // Show the popup
-      setTimeout(() => {
-        setIsCopied(false); // Hide the popup after 2 seconds
-      }, 2000);
+// <<<<<<< getRandom-algo
+//       return <Model />;
+// =======
+//       setIsCopied(true); // Show the popup
+//       setTimeout(() => {
+//         setIsCopied(false); // Hide the popup after 2 seconds
+//       }, 2000);
+// >>>>>>> master
     });
   };
 
   const getRandom = () => {
-    let characters = [];
+    const selectedOptions = [
+      isUpperCase && "upperCase",
+      isLowerCase && "lowerCase",
+      isNumbers && "numbers",
+      isSymbols && "symbols",
+    ].filter(Boolean);
 
-    if (isUpperCase) {
-      characters.push(
-        upperCaseLetters[Math.floor(Math.random() * upperCaseLetters.length)],
-      );
+    let selectRandomOption = selectedOptions[Math.floor(Math.random() * selectedOptions.length)];
+
+    switch (selectRandomOption) {
+      case "upperCase":
+        return upperCaseLetters[Math.floor(Math.random() * upperCaseLetters.length)];
+      case "lowerCase":
+        return lowerCaseLetters[Math.floor(Math.random() * lowerCaseLetters.length)];
+      case "numbers":
+        return numbers[Math.floor(Math.random() * numbers.length)];
+      case "symbols":
+        return symbols[Math.floor(Math.random() * symbols.length)];
+      default:
+        return "";
     }
-
-    if (isLowerCase) {
-      characters.push(
-        lowerCaseLetters[Math.floor(Math.random() * lowerCaseLetters.length)],
-      );
-    }
-
-    if (isNumbers) {
-      characters.push(numbers[Math.floor(Math.random() * numbers.length)]);
-    }
-
-    if (isSymbols) {
-      characters.push(symbols[Math.floor(Math.random() * symbols.length)]);
-    }
-
-    return characters.join("");
   };
 
   return (
