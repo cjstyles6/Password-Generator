@@ -7,7 +7,6 @@ import {
   numbers,
   symbols,
 } from "../utility";
-import Model from "./Model";
 
 const PasswordGenerator = () => {
   const [password, setPassword] = useState("Tstlm");
@@ -16,6 +15,8 @@ const PasswordGenerator = () => {
   const [isLowerCase, setIsLowerCase] = useState(true);
   const [isNumbers, setNumbers] = useState(false);
   const [isSymbols, setSymbols] = useState(false);
+  const [isCopied, setIsCopied] = useState(false); // State for the popup
+
 
   const generatePassword = (e) => {
     e.preventDefault();
@@ -31,7 +32,14 @@ const PasswordGenerator = () => {
   const copyToClipBoard = () => {
     navigator.clipboard.writeText(password).then(() => {
       console.log('copied');
-      return <Model />;
+// <<<<<<< getRandom-algo
+//       return <Model />;
+// =======
+//       setIsCopied(true); // Show the popup
+//       setTimeout(() => {
+//         setIsCopied(false); // Hide the popup after 2 seconds
+//       }, 2000);
+// >>>>>>> master
     });
   };
 
@@ -68,8 +76,14 @@ const PasswordGenerator = () => {
 
         <h3 className="mx-auto flex w-full items-center justify-between px-[1.5em] text-center text-xl font-bold tracking-wider text-blue-950">
           {password}{" "}
-          {password !== "" && <FaClipboard onClick={copyToClipBoard} />}
+          {password !== "" && <FaClipboard className="cursor-pointer" onClick={copyToClipBoard} />}
         </h3>
+        {isCopied && (
+          <div className="absolute top-5 right-5 bg-green-500 text-white py-2 px-4 rounded-md">
+            Copied to clipboard!
+          </div>
+        )}
+
 
         <form action="">
           <div className="input-form">
