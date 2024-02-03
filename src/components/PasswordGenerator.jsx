@@ -7,7 +7,6 @@ import {
   numbers,
   symbols,
 } from "../utility";
-import Model from "./Model";
 
 const PasswordGenerator = () => {
   const [password, setPassword] = useState("Tstlm");
@@ -31,7 +30,6 @@ const PasswordGenerator = () => {
   const copyToClipBoard = () => {
     navigator.clipboard.writeText(password).then(() => {
       console.log('copied');
-      return <Model/>
     });
   };
 
