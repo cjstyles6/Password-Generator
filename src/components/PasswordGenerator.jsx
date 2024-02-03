@@ -15,6 +15,8 @@ const PasswordGenerator = () => {
   const [isLowerCase, setIsLowerCase] = useState(true);
   const [isNumbers, setNumbers] = useState(false);
   const [isSymbols, setSymbols] = useState(false);
+  const [isCopied, setIsCopied] = useState(false); // State for the popup
+
 
   const generatePassword = (e) => {
     e.preventDefault();
@@ -30,33 +32,32 @@ const PasswordGenerator = () => {
   const copyToClipBoard = () => {
     navigator.clipboard.writeText(password).then(() => {
       console.log('copied');
+      return <Model/>
     });
   };
 
   const getRandom = () => {
-    let characters = [];
+    const selectedOptions = [
+      isUpperCase && "upperCase",
+      isLowerCase && "lowerCase",
+      isNumbers && "numbers",
+      isSymbols && "symbols",
+    ].filter(Boolean);
 
-    if (isUpperCase) {
-      characters.push(
-        upperCaseLetters[Math.floor(Math.random() * upperCaseLetters.length)],
-      );
+    let selectRandomOption = selectedOptions[Math.floor(Math.random() * selectedOptions.length)];
+
+    switch (selectRandomOption) {
+      case "upperCase":
+        return upperCaseLetters[Math.floor(Math.random() * upperCaseLetters.length)];
+      case "lowerCase":
+        return lowerCaseLetters[Math.floor(Math.random() * lowerCaseLetters.length)];
+      case "numbers":
+        return numbers[Math.floor(Math.random() * numbers.length)];
+      case "symbols":
+        return symbols[Math.floor(Math.random() * symbols.length)];
+      default:
+        return "";
     }
-
-    if (isLowerCase) {
-      characters.push(
-        lowerCaseLetters[Math.floor(Math.random() * lowerCaseLetters.length)],
-      );
-    }
-
-    if (isNumbers) {
-      characters.push(numbers[Math.floor(Math.random() * numbers.length)]);
-    }
-
-    if (isSymbols) {
-      characters.push(symbols[Math.floor(Math.random() * symbols.length)]);
-    }
-
-    return characters.join("");
   };
 
   return (
@@ -68,8 +69,14 @@ const PasswordGenerator = () => {
 
         <h3 className="mx-auto flex w-full items-center justify-between px-[1.5em] text-center text-xl font-bold tracking-wider text-blue-950">
           {password}{" "}
-          {password !== "" && <FaClipboard onClick={copyToClipBoard} />}
+          {password !== "" && <FaClipboard className="cursor-pointer" onClick={copyToClipBoard} />}
         </h3>
+        {isCopied && (
+          <div className="absolute top-5 right-5 bg-green-500 text-white py-2 px-4 rounded-md">
+            Copied to clipboard!
+          </div>
+        )}
+
 
         <form action="">
           <div className="input-form">
